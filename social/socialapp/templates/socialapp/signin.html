@@ -1,0 +1,43 @@
+{% include "./header.html" %}
+<!-- Main body -->
+<section class="vh-100 main-body">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col d-flex justify-content-center">
+                <div class="card h-100 signup-card mt-5">
+                    <div class="card-body align-content-center">
+                        <!-- Card header -->
+                        <div class="row heading-card">
+                            <h2 class="card-title">Socializze</h2>
+                            <span class="card-subtitle mb-2 text-muted">Sign In</span>
+                        </div>
+                        <!-- Sign in form -->
+                        <form id="signin_form" method="POST" action="/signin/">
+                            {% csrf_token %}
+                            <div class="form-row form-css">
+                                <label for="name">Username</label>
+                                <input id="username" name="username" class="form-control mb-3" type="text">
+                            </div>
+                            <div class="form-row form-css">
+                                <label for="name">Password</label>
+                                <input id="password" name="password" class="form-control mb-3" type="password">
+                            </div>
+                            <div class="form-row form-css text-center">
+                                <input class="btn btn-dark signup-btn mt-2 mb-2" type="submit" value="Sign In" />
+                            </div>
+                            
+                        </form>
+                        <hr class="me-5 ms-5">
+                        <!-- Link to sign up page -->
+                        <div class="form-row form-css text-center">
+                            <a class="mt-2 signup-btn btn btn-dark" href="../register">Sign Up</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+    
+{% include "./footer.html" %}

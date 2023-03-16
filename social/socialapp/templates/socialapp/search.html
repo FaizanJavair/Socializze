@@ -1,0 +1,82 @@
+{% include "./header.html" %}
+{% include "./navigation.html" %}
+{% block content %}
+<!-- Checking if user is authenticated -->
+{% if user.is_authenticated %}
+<!-- main body -->
+<main>
+    <div class="container">
+        <div class="row g-4 ps-2 pe-2 pt-2 post-row">
+            <div class="col">
+                <div class="card">
+                    
+                    <div class="card-header" style="background-color: white;">
+                        <h5 class="mt-2 text-center">Search Results</h5>
+                    </div>
+                    
+                    <div class="card-body">
+                        <!-- Search results section -->
+                        {% if username_profile_list %}
+                        {% for users in username_profile_list %}
+                        <div class=" d-flex align-items-center justify-content-between">
+                            <!-- Body of search results  of current user-->
+                            {% if users.user == user %}
+                            <div class="d-flex align-items-center">
+                                <div>
+                                    <div class="nav nav-divider">
+                                        <h6 class="card-title">You</h6>
+
+                                    </div>
+                                    <span class="mb-0 text-muted">{{users.user.appuser.occupation}}</span>
+
+                                </div>
+                               
+                            </div>
+                            <!-- button taking back to home -->
+                            <div class=""> <a class="btn btn-dark rounded-pill"
+                                    href="/">Home</a></div>
+                            
+                        </div>
+                        <hr class=" w-100">
+                            {% else %}
+                            <!-- Search result section of other users -->
+                            <div class="d-flex align-items-center">
+                               
+                                <div>
+                                    <div class="nav nav-divider">
+                                        <h6 class="card-title">{{users.user.username}}</h6>
+
+                                    </div>
+                                    <span class="mb-0 text-muted">{{users.user.appuser.occupation}}</span>
+
+                                </div>
+                                
+                            </div>
+                            
+                            <div class=""> <a class="btn btn-dark rounded-pill"
+                                    href="/profile/{{users.user}}">View Profile</a></div>
+                           
+                        </div>
+                       
+                        <hr class=" w-100">
+                            {% endif %}
+                            
+                        {% endfor %}
+                            <!-- If no results, then shows this -->
+                            {% else %}
+                            <div class="d-flex flex-row flex-grow-1 justify-content-center align-items-center p-4">
+                                <p>No results</p>
+                            </div>
+                            {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+</main>
+{% else %}
+    {% include "./signin.html" %}
+{% endif %}
+{% endblock %}
+{% include "./footer.html" %}

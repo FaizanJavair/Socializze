@@ -1,0 +1,52 @@
+{% include "./header.html" %}
+{% include "./navigation.html" %}
+{% block content %}
+{% if user.is_authenticated %}
+ <!-- edit profile section start -->
+ <main>
+    <div class="container">
+        <!-- edit profile card start  -->
+        <div class="card mt-2">
+            <!-- card header -->
+            <div class="card-header">
+                <h5>Edit your profile</h5>
+            </div>
+            <!-- edit profile card body start -->
+            <div class="card-body">
+                <!-- edit profile form -->
+                <form method="POST" action="/edit/" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{form.as_p}}
+            
+                <input class="btn btn-dark" type="submit" name="Update Information">
+                </form>
+                <!-- edit profile card form endt -->
+            </div>
+            <!-- edit profile card body end -->
+            <!-- edit profile card footer start -->
+            <div class="card-footer">
+
+                <div class=" d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <!-- back button start -->
+                        <div class="ms-2 me-2">
+                            <a class="btn button-hover text-decoration-none"
+                                href="/"><i class="bi bi-arrow-left me-3"></i>Home</a>
+                        </div>
+                        <!-- back button end -->
+                    </div>
+
+                </div>
+            </div>
+            <!-- edit profile card footer end -->
+
+        </div>
+    </div>
+    <!-- edit profile card end  -->
+
+</main>
+{% else %}
+    {% include "./signin.html" %}
+{% endif %}
+{% endblock %}
+{% include "./footer.html" %}

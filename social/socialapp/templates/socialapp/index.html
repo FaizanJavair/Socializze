@@ -1,0 +1,128 @@
+{% include "./header.html" %}
+{% include "./navigation.html" %}
+{% block content %}
+{% if user.is_authenticated %}
+ <!-- User profile space start -->
+ <main>
+    <div class="container">
+        <div class="row g-4 pt-2  ps-2 pe-2 post-row ms-lg-5 me-lg-5">
+            <div class="col">
+                <div class="card">
+                    
+                    <div class="card-body align-items-center p-2 m-0">
+                        <!-- profile picture with background space -->
+                        <div class="bg-dark rounded-4">
+                            <div class="profile">
+                                <div class="profile-story">
+                                    <img class="rounded-circle profile-image" src="{{request.user.appuser.profile_image.url}}"
+                                        alt="">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Name + title space -->
+                        <div class="text-center">
+                            <h5 class="card-title"> <b>{{user.username}}</b> </h5>
+                            <span class="card-subtitle text-muted">{{request.user.appuser.occupation}}</span>
+                        </div>
+                        <!-- bio space -->
+                        <div class=" card-text text-center pt-2 ms-5 me-5">
+                            <p class="text-muted">{{request.user.appuser.bio}}
+                            </p>
+                        </div>
+
+                    </div>
+                    <div class="card-footer" style="background-color: white;">
+                        <!-- button space start -->
+                        <div class=" d-flex align-items-center justify-content-between">
+
+                        
+                            <div class="d-flex align-items-center">
+                                <!-- chatroom button start -->
+                                <div class="ms-4 me-4">
+                                    <input id="room-name-input" type="text" value="{{request.user.username}}" hidden>
+                                    <input class="btn rounded-pill btn-dark text-decoration-none" type="button" id="room-name-submit" value="Your Chat Room">
+                                </div>
+                                <!-- chatroom button end -->
+                            </div>
+                            <!-- setting body start -->
+                            <div class="d-flex align-items-center">
+                                <!-- Edit profile button start -->
+                                <div class="ms-4 me-4">
+                                    <a class="btn rounded-pill btn-dark text-decoration-none"
+                                        href="../edit"><i
+                                            class="bi bi-pencil me-2"></i>Edit
+                                        Profile</a>
+                                </div>
+                                <!-- Edit profile button end -->
+                            </div>
+                        </div>
+                        <!-- button space end -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- Showing all logged in user posts -->
+        {% if posts|length == 0 %}
+        <div class="row g-4  ps-2 pe-2 post-row ms-lg-5 me-lg-5">
+            <div class="col">
+                <p class="text-muted mt-4 text-center">Wow, Such Empty!</p>
+            </div>
+        </div>
+        {% else %}
+            {% for post in posts %}
+            <!-- Post's row start -->
+            <div class="row g-4  ps-2 pe-2 post-row ms-lg-5 me-lg-5">
+                <!-- Posts column Start -->
+                <div class="col">
+                    {% if not post.post_image%}
+                    <!-- User posts Without pictures start -->
+                    <div class="card mt-2 mb-2 w-100 post-card  pt-2">
+                        <div class="card-body bg-light">
+                            <p class="mb-1">{{post.description}}</p>
+                        </div>
+                        <div class="card-footer bg-light">
+                            <a class="btn rounded-pill btn-danger text-decoration-none" href="../deletepost/{{post.id}}">Delete</a>
+                        </div>
+                    </div>
+
+                    {% else %}
+                    <!-- User posts With pictures start -->
+                    <div class="card mt-2 mb-2 w-100 post-card  pt-2">
+                        <div class="card-header">
+                            <h6><span>@{{request.user.username}}</span></h6>
+                        </div>
+                        <div class="card-body bg-light">
+                            <p class="mb-3">{{post.description}}</p>
+                            <img class="card-img" src="{{post.post_image.url}}" alt="">
+                        </div>
+                        <div class="card-footer bg-light">
+                            <a class="btn rounded-pill btn-danger text-decoration-none" href="../deletepost/{{post.id}}">Delete</a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+ </main>
+ <!-- Script enabling the chatroom -->
+ <script>
+    document.querySelector('#room-name-input').focus();
+    document.querySelector('#room-name-input').onkeyup = function(e) {
+        if (e.keyCode === 13) {  // enter, return
+            document.querySelector('#room-name-submit').click();
+        }
+    };
+
+    document.querySelector('#room-name-submit').onclick = function(e) {
+        var roomName = document.querySelector('#room-name-input').value;
+        window.location.pathname = '/chat/' + roomName + '/';
+    };
+</script>   
+{% else %}
+    {% include "./signin.html" %}
+{% endif %}
+{% endblock %}
+{% include "./footer.html" %}

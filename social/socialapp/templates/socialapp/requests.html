@@ -1,0 +1,67 @@
+{% include "./header.html" %}
+{% include "./navigation.html" %}
+{% block content %}
+{% if user.is_authenticated %}
+<main>
+    <div class="container">
+        <div class="row g-4 ps-2 pe-2 pt-2 post-row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header" style="background-color: white;">
+                        <h5 class="mt-2 text-center">Friend Requests</h5>
+                    </div>
+                    <!-- Displaying all the friend requests -->
+                    <div class="card-body">
+                        <!-- parsing over all of them -->
+                        {% if requests|length > 0 %}
+                            {% for request in requests %} 
+                            <div class=" d-flex align-items-center justify-content-between">
+                                
+                                <div class="d-flex align-items-center">
+                                  <!-- Showing requests -->
+                                    <div>
+                                        <div class="nav nav-divider">
+                                            <h5 class="card-title">{{request.sender}}</h6>
+
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                                
+                                <div class=""> 
+                                    <!-- Buttons enabling accept and delete request functionality -->
+                                        <a class="btn btn-danger rounded-pill"
+                                        href="../request/delete/{{request.sender}}">Delete</a>
+                                        <a class="btn btn-success rounded-pill"
+                                        href="../request/accept/{{request.sender}}">Accept</a>
+                                </div>
+                               
+                            </div>
+                            
+                            <hr class=" w-100">  
+                            {% endfor %}
+                            
+                        {% else %}
+                        <!-- If no requests, then show's this -->
+                        <div class="d-flex flex-row flex-grow-1 justify-content-center align-items-center p-4">
+                            <p>No results</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                  
+                    </div>
+                </div>
+              
+            </div>
+        </div>
+
+    </div>
+   
+</main>
+{% else %}
+    {% include "./signin.html" %}
+{% endif %}
+{% endblock %}
+{% include "./footer.html" %}
+
+        

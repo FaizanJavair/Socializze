@@ -1,0 +1,35 @@
+This is a manual requirements file so won't work using python command in the terminal.
+
+Now this application requires the following package==versions:
+Django==3.2
+django-bootstrap-v5==1.0.11
+djangorestframework==3.12.4
+channels==2.4
+channels-redis==2.4.2
+factory-boy==3.2.1
+django-factory-boy==1.00
+redis==4.4.2
+django-extensions==3.2.1
+
+It is also worth mentioning that the Redis is running on default port(6379)
+And ensure that the Redis server is running to enable chat functionality in  the application. 
+
+To run the application just type in:
+python manage.py runserver 127.0.0.1:8000
+
+The Superuser is:
+Username: faizanjavair
+Password: admin
+
+Other users:
+Username:
+1. coder
+2. hello
+3. Jessica
+4. Fawad
+5. jv
+6. Henry
+Password: admin
+(All of the users listed above have the one password set)
+
+All of these requirements are also mentioned in the report.

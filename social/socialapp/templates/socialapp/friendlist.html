@@ -1,0 +1,66 @@
+{% include "./header.html" %}
+{% include "./navigation.html" %}
+{% block content %}
+{% if user.is_authenticated %}
+<main>
+    <div class="container">
+        <div class="row g-4 ps-2 pe-2 pt-2 post-row">
+            <div class="col">
+                <div class="card">
+                    <!-- all friends card header -->
+                    <div class="card-header" style="background-color: white;">
+                        <h5 class="mt-2 text-center">All Friends</h5>
+                    </div>
+                    
+                    <div class="card-body">
+                        {% if friends|length > 0 %}
+                        {% for friend in friends %}
+                      
+                        <div class=" d-flex align-items-center justify-content-between">
+                            <!-- Friend body start -->
+                            <div class="d-flex align-items-center">
+                               
+                                <!-- Friend User start -->
+                                
+                                <div>
+                                    <div class="nav nav-divider">
+                                        <h6 class="card-title">{{friend.username}}</h6>
+
+                                    </div>
+                                    
+
+                                </div>
+                                <!-- Friend User end -->
+                            </div>
+                            <!-- Buttons to remove or view friend -->
+                            <div class=""> 
+                                <a class="btn btn-dark rounded-pill"
+                                    href="../profile/{{friend}}">View Profile</a>
+
+                                <a class="btn btn-danger rounded-pill"
+                                    href="../unfriend/{{friend}}">Remove</a>
+                            </div>
+                            
+                        </div>
+                        <!-- Friend space end -->
+                        <hr class=" w-100">
+                            
+                        {% endfor %}
+                            <!-- If no friends. shows this -->
+                            {% else %}
+                            <div class="d-flex flex-row flex-grow-1 justify-content-center align-items-center p-4">
+                                <p>Hmm, no friends ehh? Trying adding some!</p>
+                            </div>
+                            {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+</main>
+{% else %}
+    {% include "./signin.html" %}
+{% endif %}
+{% endblock %}
+{% include "./footer.html" %}

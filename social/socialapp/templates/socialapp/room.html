@@ -1,0 +1,76 @@
+{% include "./header.html" %}
+{% include "./navigation.html" %}
+{% block content %}
+{% if user.is_authenticated %}
+<!-- Main body of chatroom -->
+<main>
+    <div class="container">
+        <div class="row g-4 pt-2  ps-2 pe-2 post-row ms-lg-5 me-lg-5">
+            <div class="col">
+                <div class="card">
+                    <!-- Title of chatroom -->
+                    <div class="card-header">
+                        <h5 class="card-title">Friends Chatroom</h5>
+                        <span class="text-muted"> You are in <b>{{room_name}}'s</b> chatroom!</span>
+                    </div>
+                    <!-- chat text shown here -->
+                    <div class="card-body align-items-center p-2 m-0">
+                    <textarea class="form-control" id="chat-log" cols="100" rows="20"></textarea><br>
+                    <input class=" p-2 form-control" id="chat-message-input" type="text" size="100"><br>
+                    <!-- Send button -->
+                    <input class="btn btn-dark" id="chat-message-submit" type="button" value="Send">
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- Passing the roomname and username as json to JS -->
+{{ room_name|json_script:"room-name" }}
+{{ request.user.username|json_script:"user-username" }}
+<!-- Script enabling the chat -->
+<script>
+    // getting the context of roomname and username
+    const roomName = JSON.parse(document.getElementById('room-name').textContent);
+    const user_username = JSON.parse(document.getElementById('user-username').textContent);
+
+    // setting up custom chat URL
+    const chatSocket = new WebSocket('ws://'+ window.location.host+ '/ws/'+roomName+ '/'
+    );
+
+    // function printing the user message
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        document.querySelector('#chat-log').value += (data.username + ': ' + data.message + '\n');
+    };
+
+    // function checking if chat closed
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+    // sending the data to back-end consumer.py as Send is clicked
+    document.querySelector('#chat-message-input').focus();
+    document.querySelector('#chat-message-input').onkeyup = function(e) {
+        if (e.keyCode === 13) {  // enter, return
+            document.querySelector('#chat-message-submit').click();
+        }
+    };
+
+    // sending message and the username of the current user in the chatroom to back end
+    document.querySelector('#chat-message-submit').onclick = function(e) {
+        const messageInputDom = document.querySelector('#chat-message-input');
+        const message = messageInputDom.value;
+        chatSocket.send(JSON.stringify({
+            'message': message,
+            'username': user_username
+        }));
+        messageInputDom.value = '';
+    };
+</script>
+{% else %}
+{% include "./signin.html" %}
+{% endif %}
+{% endblock %}
+{% include "./footer.html" %}
+
